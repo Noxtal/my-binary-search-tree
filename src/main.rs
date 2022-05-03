@@ -9,13 +9,17 @@ struct Node<T: Num + NumCast + PartialOrd + Display + Copy> {
 }
 
 impl<T: Num + NumCast + PartialOrd + Display + Copy> Node<T> {
+  pub fn new(value: T) -> Node<T> {
+    return Node{value, left: None, right: None};
+  }
+
   pub fn insert(&mut self, value: T) {
     if self.value < value {
       if self.left.is_some() {
         self.left.as_mut().unwrap().insert(value);
       }
       else {
-        self.left = Some(Box::new(Node{value, left: None, right: None}));
+        self.left = Some(Box::new(Node::new(value)));
       }
     }
     else {
@@ -23,7 +27,7 @@ impl<T: Num + NumCast + PartialOrd + Display + Copy> Node<T> {
         self.right.as_mut().unwrap().insert(value);
       }
       else {
-        self.right = Some(Box::new(Node{value, left: None, right: None}));
+        self.right = Some(Box::new(Node::new(value)));
       }
     }
   }
@@ -117,7 +121,7 @@ fn main() {
 
   let mut rng = rand::thread_rng();
 
-  let mut root = Node{value: 0.5, left: None, right: None};
+  let mut root = Node::new(0.5);
   for _ in 0..10 {
     root.insert(rng.gen_range(0f64..1f64));
   }
